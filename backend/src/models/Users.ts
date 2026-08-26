@@ -19,5 +19,5 @@ export class Users {
     cpf: string
 
     @OneToMany(() => Games, g => g.user)
-    games: Games
+    games: Games[]
 }

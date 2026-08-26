@@ -1,0 +1,28 @@
+import { Request, Response } from "express";
+import { AuthService } from "../services/AuthService";
+import { generateToken } from "../utils/jwt";
+
+export class AuthController {
+    private service = new AuthService()
+
+    async login(req:Request, res:Response) {
+        try {
+            const {email, password} = req.body
+
+            const user = await this.service.login(email, password)
+            const safe = user
+            delete(safe as any).password
+
+            const token = generateToken({
+                name: user.name,
+                email: user.email,
+                password: user.password,
+                cpf: user.cpf
+            })
+            return res.status(200).json({safe, token})
+        } catch(e: any) {
+            return res.status(404).json({message: e.message})
+        }
+    }
+
+}
