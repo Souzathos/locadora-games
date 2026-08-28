@@ -1,67 +1,48 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/UserService";
-import { generateToken } from "../utils/jwt";
-
-const userService = new UserService();
+import { UserMapper } from "../mappers/UserMapper";
 
 export class UserController {
     private service = new UserService()
 
 
     async create (req: Request, res: Response) {
-        try {
-            const data = req.body
-            const user = await this.service.register(data)
+        const data = req.body
+        const user = await this.service.register(data)
 
-            const safe = user
-            delete(safe as any).password
-
-            return res.status(201).json(safe)
-        } catch(e: any) {
-            return res.status(400).json({message: e.message})
-        }
+        return res.status(201).json(UserMapper.toResponse(user))
     }
 
     async list(req:Request, res:Response) {
-        try {
-            const users = await this.service.list()
+        const users = await this.service.list()
 
-            return res.status(200).json(users)
-        }catch(e: any) {
-            return res.status(404).json({message: e.message})
-        }
+        return res.status(200).json(users)
     }
 
     async showById(req:Request, res:Response) {
-        try {
-            const user = await this.service.showById(Number(req.params.id))
+        const user = await this.service.showById(Number(req.params.id))
 
-            return res.status(200).json(user)
-        } catch(e: any) {
-            return res.status(404).json({message: e.message})
-        }
+        return res.status(200).json(user)
     }
 
     async showByEmail(req:Request, res:Response) {
-        try {
-            const {email} = req.body
-            const user = await this.service.showByEmail(email)
+        const {email} = req.body
+        const user = await this.service.showByEmail(email)
 
-            return res.status(200).json(user)
-        } catch(e: any) {
-            return res.status(404).json({message: e.message})
-        }
+        return res.status(200).json(user)
     }
 
     async update(req:Request, res:Response) {
-        try {
-            const data = req.body
-            
-            const user = await this.service.update(data, Number(req.params.id))
+        const data = req.body
 
-            return res.status(200).json(user)
-        } catch(e: any) {
-            return res.status(400).json({message: e.message})
-        }
+        const user = await this.service.update(data, Number(req.params.id))
+
+        return res.status(200).json(user)
+    }
+
+    async delete(req:Request, res:Response) {
+        const user = await this.service.delete(Number(req.params.id))
+
+        return res.status(200).json(user)
     }
 }

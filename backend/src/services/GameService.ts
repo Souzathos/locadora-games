@@ -1,5 +1,6 @@
 import { AppDataSource } from "../config/dataSource";
 import { Games } from "../models/Games";
+import { BadRequestError } from "../errors";
 
 const repo = AppDataSource.getRepository(Games)
 

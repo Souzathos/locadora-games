@@ -1,35 +1,32 @@
 import { AppDataSource } from "../config/dataSource";
-import { CreateUserDTO } from "../dtos/user";
+import { CreateUserDTO, UpdateUserDTO } from "../dtos/user";
 import { UserMapper } from "../mappers/UserMapper";
 import { Users } from "../models/Users";
 import bcrypt from 'bcryptjs'
+import { ConflictError, NotFoundError } from "../errors"
 
 export class UserService {
     private repo = AppDataSource.getRepository(Users)
 
     async register(data: any) {
-        if(!data) throw new Error('Dados não inseridos')
 
         const exists = await this.repo.findOneBy({email: data.email})
-        if(exists) throw new Error('Usuário já existe')
+        if(exists) throw new ConflictError('Usuário já existe')
         const cpfExists = await this.repo.findOneBy({cpf: data.cpf})
-        if(cpfExists) throw new Error('Usuário já existe')
+        if(cpfExists) throw new ConflictError('Usuário já existe')
 
         const password = await bcrypt.hash(data.password, 10)
-        const user = CreateUserDTO.parse(data)
+        const parsed = CreateUserDTO.parse(data)
 
-        if(user) {
-            this.repo.create({...user, password: password})
-        }
+        const user = this.repo.create({...parsed, password: password})
 
-        return this.repo.save(user)
+        return await this.repo.save(user)
     }
 
     async showById(id: number) {
-        if(!id) throw new Error('ID não fornecido')
 
         const user = await this.repo.findOneBy({id})
-        if(!user) throw new Error('Usuário não encontrado')
+        if(!user) throw new NotFoundError('Usuário não encontrado')
         
         return UserMapper.toResponse(user)
     }
@@ -37,17 +34,16 @@ export class UserService {
     async list() {
         const users = await this.repo.find()
 
-        if(!users) throw new Error('Usuários não encontrados')
+        if(!users) throw new NotFoundError('Usuários não encontrados')
 
         return users.map((user) => UserMapper.toResponse(user))
     }
 
 
     async showByEmail(email: string) {
-        if(!email) throw new Error('Email não fornecido')
 
         const user = await this.repo.findOneBy({email})
-        if(!user) throw new Error('Usuário não encontrado')
+        if(!user) throw new NotFoundError('Usuário não encontrado')
 
         return UserMapper.toResponse(user)
     }
@@ -55,11 +51,24 @@ export class UserService {
 
     async update(data: Partial<Users>, id: number) {
         const user = await this.repo.findOneBy({id})
-        if(!user) throw new Error("Usuário não encontrado")
+        if(!user) throw new NotFoundError("Usuário não encontrado")
 
-        await this.repo.update(id, data)
+        const updatedUser = UpdateUserDTO.parse(data)
+        if(updatedUser) {
+            await this.repo.update(id, updatedUser)
+        }
 
         // this.repo.save(user)
         return {message: 'Usuário atualizado com sucesso!'}
     }
+
+    async delete(id: number) {
+        const user = await this.repo.findOneBy({id})
+        if(!user) throw new NotFoundError("Usuário não encontrado")
+            
+        await this.repo.delete(id)
+        return {message: 'Usuário deletado com sucesso!'}
+    }
+
+    
 }

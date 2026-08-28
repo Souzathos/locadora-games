@@ -11,5 +11,9 @@
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
     "skipLibCheck": true,
+  },
+  "include": ["src/**/*.ts"],
+  "ts-node": {
+    "files": true
   }
 }
