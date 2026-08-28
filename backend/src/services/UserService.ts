@@ -1,7 +1,9 @@
 import { AppDataSource } from "../config/dataSource";
+import { CreateUserDTO } from "../dtos/user";
 import { UserMapper } from "../mappers/UserMapper";
 import { Users } from "../models/Users";
 import bcrypt from 'bcryptjs'
+
 export class UserService {
     private repo = AppDataSource.getRepository(Users)
 
@@ -14,7 +16,11 @@ export class UserService {
         if(cpfExists) throw new Error('Usuário já existe')
 
         const password = await bcrypt.hash(data.password, 10)
-        const user = this.repo.create({...data, password: password})
+        const user = CreateUserDTO.parse(data)
+
+        if(user) {
+            this.repo.create({...user, password: password})
+        }
 
         return this.repo.save(user)
     }
