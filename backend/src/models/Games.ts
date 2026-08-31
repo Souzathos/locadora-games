@@ -20,6 +20,9 @@ export class Games {
 
     @Column({nullable: true, default: false})
     rented: boolean
+
+    @Column({nullable: true})
+    rented_at: Date
     
     @ManyToOne(() => Users, u => u.games)
     user: Users

@@ -4,6 +4,13 @@ import { GameService } from "../services/GameService";
 const gameService = new GameService()
 
 export class GameController {
+
+    async list(req: Request, res: Response) {
+        const games = await gameService.list()
+
+        return res.status(200).json(games)
+    }
+
     async create (req: Request, res: Response) {
 
         const {name, price, category, deadline} = req.body
@@ -15,9 +22,7 @@ export class GameController {
 
     async update (req: Request, res: Response) {
         
-        const {price} = req.body
-
-        const game = await gameService.update(Number(price))
+        const game = await gameService.update(Number(req.params.id), req.body)
 
         return res.status(201).json(game)
     }
