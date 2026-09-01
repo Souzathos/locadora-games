@@ -15,7 +15,7 @@ export const CreateGameDTO = z.object({
         .min(3, 'Category must have ate least 3 characters')  
         .max(100, 'Category must have at most 100 characters'),
 
-    deadline: z 
-        .string()
-        .regex(/^\d{4}-\d{2}-\d{2}$/, 'Deadline must be a valid date')
+    rental_days: z 
+        .number()
+        
 })

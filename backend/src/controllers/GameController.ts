@@ -33,4 +33,11 @@ export class GameController {
 
          return res.status(204).send()
     }
+
+    async rent (req: Request, res: Response) {
+        const {gameId, userId} = req.body
+        const rent = await gameService.rent(Number(gameId), Number(userId))
+
+        return res.status(201).json(rent)
+    } 
 }

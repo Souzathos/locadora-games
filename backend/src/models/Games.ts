@@ -15,15 +15,15 @@ export class Games {
     @Column({nullable: false, length: 255})
     category: string
 
-    @Column({nullable: false})
-    deadline: Date
+    @Column({nullable: true, default: 14})
+    rental_days: number
 
     @Column({nullable: true, default: false})
     rented: boolean
 
     @Column({nullable: true})
-    rented_at: Date
+    rented_at: Date | null
     
     @ManyToOne(() => Users, u => u.games)
-    user: Users
+    user: Users | null
 }
