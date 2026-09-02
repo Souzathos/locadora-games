@@ -21,7 +21,7 @@ export class Games {
     @Column({nullable: true, default: false})
     rented: boolean
 
-    @Column({nullable: true})
+    @Column({nullable: true, type: 'timestamp'})
     rented_at: Date | null
     
     @ManyToOne(() => Users, u => u.games)

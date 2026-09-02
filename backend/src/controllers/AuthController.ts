@@ -15,7 +15,8 @@ export class AuthController {
             id: user.id,
             name: user.name,
             email: user.email,
-            cpf: user.cpf
+            cpf: user.cpf,
+            isAdmin: user.isAdmin
         })
 
         return res.status(200).json({user: UserMapper.toResponse(user), token})

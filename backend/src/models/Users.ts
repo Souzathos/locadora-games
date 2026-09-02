@@ -18,6 +18,9 @@ export class Users {
     @Column({nullable: false, length: 255, unique: true})
     cpf: string
 
+    @Column({nullable: false, default: false})
+    isAdmin: boolean
+    
     @OneToMany(() => Games, g => g.user)
     games: Games[]
 }

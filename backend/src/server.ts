@@ -13,9 +13,9 @@ dotenv.config()
 const port = Number(process.env.PORT)
 
 AppDataSource.initialize().then(() => {
-    console.log('Banco de dados conectado')
+    console.log('Database connected')
 
     app.listen(port, () => {
-        console.log(`Servidor rodando na porta ${port}`)
+        console.log(`Server running on port ${port}`)
     })
 })

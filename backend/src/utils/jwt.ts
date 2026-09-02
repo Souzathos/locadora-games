@@ -10,6 +10,7 @@ export interface TokenPayload {
     name: string
     email: string
     cpf: string
+    isAdmin: boolean
 }
 
 export const generateToken = (payload: TokenPayload) => {

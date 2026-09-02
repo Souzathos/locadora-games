@@ -13,13 +13,13 @@ export class Rentals {
     @ManyToOne(() => Users, { nullable: false })
     user: Users
 
-    @CreateDateColumn()
+    @CreateDateColumn({ type: 'timestamp' })
     rented_at: Date
 
-    @Column({ nullable: false })
+    @Column({ nullable: false, type: 'timestamp' })
     due_date: Date
 
-    @Column({ nullable: true, type: 'datetime' })
+    @Column({ nullable: true, type: 'timestamp' })
     returned_at: Date | null
 
     @Column({ nullable: false, type: 'decimal' })

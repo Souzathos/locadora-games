@@ -8,6 +8,7 @@ const routes = Router()
 
 routes.use('/user', userRoutes)
 routes.use('/auth', authRoutes)
-routes.use('/game', gameRoutes, rentRoutes)
+routes.use('/game', gameRoutes)
+routes.use('/rent', rentRoutes)
 
 export default routes

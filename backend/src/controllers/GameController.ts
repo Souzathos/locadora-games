@@ -13,9 +13,9 @@ export class GameController {
 
     async create (req: Request, res: Response) {
 
-        const {name, price, category, deadline} = req.body
+        const {name, price, category, rental_days} = req.body
 
-        const game = await gameService.register(name, Number(price), category, deadline)
+        const game = await gameService.register(name, Number(price), category, rental_days)
 
         return res.status(201).json(game)
     }
@@ -33,11 +33,4 @@ export class GameController {
 
          return res.status(204).send()
     }
-
-    async rent (req: Request, res: Response) {
-        const {gameId, userId} = req.body
-        const rent = await gameService.rent(Number(gameId), Number(userId))
-
-        return res.status(201).json(rent)
-    } 
 }

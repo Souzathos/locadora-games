@@ -17,5 +17,6 @@ export const CreateGameDTO = z.object({
 
     rental_days: z 
         .number()
+        .min(1, 'It must has at least 1 rental day')
         
 })

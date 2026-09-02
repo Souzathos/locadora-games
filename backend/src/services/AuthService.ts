@@ -7,13 +7,13 @@ export class AuthService {
 
     async login(email: string, password: string) {
 
-        if(!email || !password) throw new BadRequestError('Dados não inseridos')
+        if(!email || !password) throw new BadRequestError('Email and password are required')
 
         const user = await this.repo.findOneBy({email})
-        if(!user) throw new UnauthorizedError('Credenciais inválidas')
+        if(!user) throw new UnauthorizedError('Invalid email or password')
 
         const validate = await bcrypt.compare(password, user.password)
-        if(!validate) throw new UnauthorizedError('Credenciais inválidas')
+        if(!validate) throw new UnauthorizedError('Invalid email or password')
 
         return user
     }

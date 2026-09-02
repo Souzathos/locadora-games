@@ -6,7 +6,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
-        return next(new UnauthorizedError('Token não fornecido'));
+        return next(new UnauthorizedError('Authentication token was not provided'));
     }
 
     const token = authHeader.split(' ')[1];
@@ -14,7 +14,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
     const decoded = token ? verifyToken(token) : null;
 
     if (!decoded) {
-        return next(new UnauthorizedError('Token inválido'));
+        return next(new UnauthorizedError('Invalid or expired authentication token'));
     }
 
     req.user = decoded;
