@@ -48,7 +48,7 @@ function Register() {
                 <p className='text-xs text-center text-green-500'>{sucess}</p>
             )}
             <button onClick={handleRegister} className='font-semibold cursor-pointer'>Cadastrar</button>
-            <button onClick={() => navigate('/')}>Já possui uma conta?</button>
+            <button onClick={() => navigate('/login')}>Já possui uma conta?</button>
 
         </div>
 

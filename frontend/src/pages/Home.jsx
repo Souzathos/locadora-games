@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { listGames } from '../services/GameService'
 import { rent as rentGame } from '../services/RentService'
 import GameCard from '../components/GameCard'
+import Header from '../components/Header'
 
 function Home() {
     const [games, setGames] = useState([])
@@ -50,6 +51,7 @@ function Home() {
 
     return (
         <div className='min-h-screen p-4 flex flex-col gap-4'>
+            <Header />
             {error && (
                 <p className='text-sm text-red-500'>{error}</p>
             )}

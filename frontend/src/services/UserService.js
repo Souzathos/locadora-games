@@ -6,3 +6,7 @@ export async function register(name, email, password, cpf) {
         body: JSON.stringify({name, email, password, cpf})
     })
 }
+
+export async function showUserRentals(userId) {
+    return api(`/user/rentals/${userId}`)
+}
