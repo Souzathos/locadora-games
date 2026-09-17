@@ -1,47 +1,72 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { login } from '../services/AuthService'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useFlash } from '../hooks/useFlash'
+import Button from '../components/Button'
+import Input from '../components/Input'
 
 function Login() {
     const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [error, setError] = useState(null)
+    const [loading, setLoading] = useState(false)
+    const { error, setError } = useFlash()
 
-    async function handleLogin() {
+    async function handleLogin(e) {
+        e.preventDefault()
+        setLoading(true)
         try {
-            const data = await login(email, password)   
+            const data = await login(email, password)
             localStorage.setItem('token', data.token)
 
-            window.location.href = '/home'
+            navigate('/home')
         } catch(e) {
             setError(e.message || 'Erro ao fazer login')
+        } finally {
+            setLoading(false)
         }
     }
 
-    useEffect(() => {
-        if(!error) return
-        const t = setTimeout(() => setError(null), 3000)
-        return () => clearTimeout(t)
-    }, [error])
-
-
   return (
-    <div className='min-h-screen flex items-center justify-center'>
-            <div className='flex flex-col bg-rose-100 p-4 rounded-2xl w-80 gap-2'>
-                <h1>Bem-vindo ao cuiudo play games! </h1>
-                <input type="text" placeholder='E-mail' className='w-full p-2 border-b-2 border-gray-500'
-                value={email} onChange={(e) => setEmail(e.target.value)}/>
-
-                <input type="password" placeholder='Senha' className='w-full p-2 border-b-2 border-gray-500'
-                value={password} onChange={(e) => setPassword(e.target.value)}/>
-
-                {error && (
-                    <p className='text-sm text-red-500 '>{error}</p>
-                )}
-                <button className='font-semibold cursor-pointer' onClick={handleLogin}>Entrar</button>
-                <button onClick={() => navigate('/register')} className='cursor-pointer'>Não possui uma conta? Crie já!</button>
+    <div className='flex min-h-screen items-center justify-center bg-rose-50/60 p-4'>
+        <div className='w-full max-w-sm'>
+            <div className='mb-6 text-center'>
+                <h1 className='text-2xl font-bold text-rose-600'>
+                    cuiudo <span className='text-slate-800'>play games</span>
+                </h1>
+                <p className='mt-1 text-sm text-slate-500'>Alugue seus jogos favoritos.</p>
             </div>
+
+            <div className='flex flex-col gap-4 rounded-2xl border border-rose-100 bg-white p-5 shadow-sm'>
+                <form className='flex flex-col gap-4' onSubmit={handleLogin}>
+                    <Input
+                        label='E-mail'
+                        type='email'
+                        placeholder='voce@email.com'
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <Input
+                        label='Senha'
+                        type='password'
+                        placeholder='••••••••'
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+
+                    {error && <p className='text-sm text-red-500'>{error}</p>}
+
+                    <Button type='submit' className='w-full' loading={loading}>Entrar</Button>
+                </form>
+
+                <p className='text-center text-sm text-slate-500'>
+                    Não possui uma conta?{' '}
+                    <Link to='/register' className='font-semibold text-rose-600 hover:underline'>
+                        Crie já!
+                    </Link>
+                </p>
+            </div>
+        </div>
     </div>
   )
 }
