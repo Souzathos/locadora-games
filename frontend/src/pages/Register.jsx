@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { register } from '../services/UserService'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useFlash } from '../hooks/useFlash'
+import Button from '../components/Button'
+import Input from '../components/Input'
 
 function Register() {
     const navigate = useNavigate()
@@ -8,50 +11,58 @@ function Register() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [cpf, setCpf] = useState('')
-    const [error, setError] = useState(null)
-    const [sucess, setSucess] = useState(null)
+    const [loading, setLoading] = useState(false)
+    const { error, success, setError, setSuccess } = useFlash()
 
-    async function handleRegister() {
+    async function handleRegister(e) {
+        e.preventDefault()
+        setLoading(true)
         try {
-            const data = await register(name, email, password, cpf)
-            setSucess('Usuário criado com sucesso!')
+            await register(name, email, password, cpf)
+            setSuccess('Usuário criado com sucesso! Redirecionando para o login...')
+            setTimeout(() => navigate('/login'), 1500)
         } catch(e) {
             setError(e.message || 'Erro ao criar usuário')
+        } finally {
+            setLoading(false)
         }
     }
 
-    useEffect(() => {
-        if(!error) return
-        const t = setTimeout(() => setError(null), 3000)
-        return () => clearTimeout(t)
-    }, [error])
-
-    useEffect(() => {
-        if(!sucess) return
-        const t = setTimeout(() => setSucess(null), 3000)
-        return () => clearTimeout(t)
-    }, [sucess])
   return (
-    <div className='min-h-screen bg-white/80 p-4 flex items-center justify-center'>
+    <div className='flex min-h-screen items-center justify-center bg-rose-50/60 p-4'>
+        <div className='w-full max-w-sm'>
+            <div className='mb-6 text-center'>
+                <h1 className='text-2xl font-bold text-slate-800'>Cadastre-se!</h1>
+                <p className='mt-1 text-sm text-slate-500'>
+                    Crie sua conta para começar a alugar jogos.
+                </p>
+            </div>
 
-        <div className='bg-rose-50 p-4 rounded-xl shadow flex flex-col gap-2='>
-            <h1>Cadastre-se!</h1>
-            <input type="text" placeholder='Nome' value={name} onChange={(e) => setName(e.target.value)} className='w-full border-gray-500 border-b p-2'/>
-            <input type="text" placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} className='w-full border-gray-500 border-b p-2'/>
-            <input type="password" placeholder='Senha' value={password} onChange={(e) => setPassword(e.target.value)} className='w-full border-gray-500 border-b p-2'/>
-            <input type="text" placeholder='CPF' value={cpf} onChange={(e) => setCpf(e.target.value)} className='w-full border-gray-500 border-b p-2'/>
+            <div className='flex flex-col gap-4 rounded-2xl border border-rose-100 bg-white p-5 shadow-sm'>
+                <form className='flex flex-col gap-4' onSubmit={handleRegister}>
+                    <Input label='Nome' placeholder='Seu nome completo'
+                        value={name} onChange={(e) => setName(e.target.value)} />
+                    <Input label='E-mail' type='email' placeholder='voce@email.com'
+                        value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <Input label='Senha' type='password' placeholder='••••••••'
+                        value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <Input label='CPF' placeholder='000.000.000-00'
+                        value={cpf} onChange={(e) => setCpf(e.target.value)} />
 
-            {error && (
-                <p className='text-xs text-center text-red-500'>{error}</p>
-            )}
-            {sucess && (
-                <p className='text-xs text-center text-green-500'>{sucess}</p>
-            )}
-            <button onClick={handleRegister} className='font-semibold cursor-pointer'>Cadastrar</button>
-            <button onClick={() => navigate('/login')}>Já possui uma conta?</button>
+                    {error && <p className='text-sm text-red-500'>{error}</p>}
+                    {success && <p className='text-sm text-emerald-600'>{success}</p>}
 
+                    <Button type='submit' className='w-full' loading={loading}>Cadastrar</Button>
+                </form>
+
+                <p className='text-center text-sm text-slate-500'>
+                    Já possui uma conta?{' '}
+                    <Link to='/login' className='font-semibold text-rose-600 hover:underline'>
+                        Entrar
+                    </Link>
+                </p>
+            </div>
         </div>
-
     </div>
   )
 }

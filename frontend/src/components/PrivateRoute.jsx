@@ -1,13 +1,10 @@
-import React from 'react'
+import { Navigate } from 'react-router-dom'
+import { getToken } from '../utils/token'
 
 function PrivateRoute({children}) {
-    const token = localStorage.getItem('token')
-
-    if(!token)  {
-        return <Navigate to="/"/>
+    if(!getToken()) {
+        return <Navigate to="/login" replace />
     }
-
-   
 
     return children
 }
