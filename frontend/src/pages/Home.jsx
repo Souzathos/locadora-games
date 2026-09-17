@@ -41,11 +41,7 @@ function Home() {
         const term = search.trim().toLowerCase()
         if (!term) return games
 
-        return games.filter(
-            (game) =>
-                game.name.toLowerCase().includes(term) ||
-                game.category.toLowerCase().includes(term)
-        )
+        return games.filter((game) => game.name.toLowerCase().includes(term) || game.category.toLowerCase().includes(term))
     }, [games, search])
 
     const available = games.filter((game) => !game.rented).length
@@ -76,11 +72,8 @@ function Home() {
                         </p>
                     </div>
                     <div className='w-full sm:max-w-xs'>
-                        <Input
-                            placeholder='Buscar por nome ou categoria...'
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                        />
+                        <Input placeholder='Buscar por nome ou categoria...'
+                            value={search} onChange={(e) => setSearch(e.target.value)} />
                     </div>
                 </div>
 

@@ -79,11 +79,7 @@ function AdminGames() {
         const term = search.trim().toLowerCase()
         if (!term) return games
 
-        return games.filter(
-            (game) =>
-                game.name.toLowerCase().includes(term) ||
-                game.category.toLowerCase().includes(term)
-        )
+        return games.filter((game) => game.name.toLowerCase().includes(term) || game.category.toLowerCase().includes(term))
     }, [games, search])
 
     function openForm(game) {
@@ -163,11 +159,8 @@ function AdminGames() {
     <div className='flex flex-col gap-4'>
         <div className='flex flex-wrap items-center justify-between gap-3'>
             <div className='w-full sm:max-w-xs'>
-                <Input
-                    placeholder='Buscar por nome ou categoria...'
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                />
+                <Input placeholder='Buscar por nome ou categoria...'
+                    value={search} onChange={(e) => setSearch(e.target.value)} />
             </div>
             <Button onClick={() => openForm(null)}>+ Novo jogo</Button>
         </div>
@@ -238,37 +231,15 @@ function AdminGames() {
         <Modal open={Boolean(form)} title={editing ? 'Editar jogo' : 'Novo jogo'} onClose={closeForm}>
             {form && (
                 <form className='flex flex-col gap-4' onSubmit={handleSave}>
-                    <Input
-                        label='Nome'
-                        placeholder='Elden Ring'
-                        value={form.name}
-                        error={formErrors.name}
-                        onChange={(e) => setForm({...form, name: e.target.value})}
-                    />
-                    <Input
-                        label='Categoria'
-                        placeholder='RPG'
-                        value={form.category}
-                        error={formErrors.category}
-                        onChange={(e) => setForm({...form, category: e.target.value})}
-                    />
+                    <Input label='Nome' placeholder='Elden Ring' error={formErrors.name}
+                        value={form.name} onChange={(e) => setForm({...form, name: e.target.value})} />
+                    <Input label='Categoria' placeholder='RPG' error={formErrors.category}
+                        value={form.category} onChange={(e) => setForm({...form, category: e.target.value})} />
                     <div className='flex gap-4'>
-                        <Input
-                            label='Preço (R$)'
-                            placeholder='59.90'
-                            inputMode='decimal'
-                            value={form.price}
-                            error={formErrors.price}
-                            onChange={(e) => setForm({...form, price: e.target.value})}
-                        />
-                        <Input
-                            label='Dias de aluguel'
-                            type='number'
-                            min='1'
-                            value={form.rental_days}
-                            error={formErrors.rental_days}
-                            onChange={(e) => setForm({...form, rental_days: e.target.value})}
-                        />
+                        <Input label='Preço (R$)' placeholder='59.90' inputMode='decimal' error={formErrors.price}
+                            value={form.price} onChange={(e) => setForm({...form, price: e.target.value})} />
+                        <Input label='Dias de aluguel' type='number' min='1' error={formErrors.rental_days}
+                            value={form.rental_days} onChange={(e) => setForm({...form, rental_days: e.target.value})} />
                     </div>
 
                     {formErrors.form && <p className='text-sm text-red-500'>{formErrors.form}</p>}

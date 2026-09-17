@@ -60,11 +60,7 @@ function AdminRentals() {
                         type='button'
                         aria-pressed={filter === option.key}
                         onClick={() => setFilter(option.key)}
-                        className={`cursor-pointer rounded-lg px-3 py-1.5 text-sm font-semibold transition ${
-                            filter === option.key
-                                ? 'bg-rose-500 text-white shadow-sm'
-                                : 'text-slate-600 hover:bg-rose-50 hover:text-rose-700'
-                        }`}
+                        className={`cursor-pointer rounded-lg px-3 py-1.5 text-sm font-semibold transition ${filter === option.key ? 'bg-rose-500 text-white shadow-sm' : 'text-slate-600 hover:bg-rose-50 hover:text-rose-700'}`}
                     >
                         {option.label}
                     </button>

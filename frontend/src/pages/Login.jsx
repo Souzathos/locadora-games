@@ -39,20 +39,10 @@ function Login() {
 
             <div className='flex flex-col gap-4 rounded-2xl border border-rose-100 bg-white p-5 shadow-sm'>
                 <form className='flex flex-col gap-4' onSubmit={handleLogin}>
-                    <Input
-                        label='E-mail'
-                        type='email'
-                        placeholder='voce@email.com'
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <Input
-                        label='Senha'
-                        type='password'
-                        placeholder='••••••••'
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
+                    <Input label='E-mail' type='email' placeholder='voce@email.com'
+                        value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <Input label='Senha' type='password' placeholder='••••••••'
+                        value={password} onChange={(e) => setPassword(e.target.value)} />
 
                     {error && <p className='text-sm text-red-500'>{error}</p>}
 

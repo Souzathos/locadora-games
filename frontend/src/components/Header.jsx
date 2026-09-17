@@ -4,11 +4,7 @@ import Badge from './Badge'
 import Button from './Button'
 
 function linkClass({isActive}) {
-    return `rounded-lg px-3 py-1.5 text-sm font-semibold transition ${
-        isActive
-            ? 'bg-rose-100 text-rose-700'
-            : 'text-slate-600 hover:bg-rose-50 hover:text-rose-700'
-    }`
+    return `rounded-lg px-3 py-1.5 text-sm font-semibold transition ${isActive ? 'bg-rose-100 text-rose-700' : 'text-slate-600 hover:bg-rose-50 hover:text-rose-700'}`
 }
 
 function Header() {

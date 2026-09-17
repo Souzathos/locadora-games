@@ -31,11 +31,7 @@ function Admin() {
                         role='tab'
                         aria-selected={tab === option.key}
                         onClick={() => setTab(option.key)}
-                        className={`-mb-px cursor-pointer border-b-2 px-4 py-2.5 text-sm font-semibold transition ${
-                            tab === option.key
-                                ? 'border-rose-500 text-rose-600'
-                                : 'border-transparent text-slate-500 hover:text-rose-600'
-                        }`}
+                        className={`-mb-px cursor-pointer border-b-2 px-4 py-2.5 text-sm font-semibold transition ${tab === option.key ? 'border-rose-500 text-rose-600' : 'border-transparent text-slate-500 hover:text-rose-600'}`}
                     >
                         {option.label}
                     </button>
